@@ -1,11 +1,9 @@
 <script setup>
-import Navbar from "../components/Navbar.vue";
-import SideBar from "../components/SideBar.vue";
+import MasterLayout from "../components/MasterLayout.vue";
 </script>
 
 <template>
-  <Navbar />
-  <SideBar />
+  <MasterLayout />
   <slot />
 </template>
 
