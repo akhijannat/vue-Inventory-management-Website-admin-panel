@@ -22,16 +22,58 @@ function logOut() {
     });
   }
 }
+
+import { ref } from "vue";
+
+const mobileMenuOpen = ref(false);
+
+const toggleMobileMenu = () => {
+  mobileMenuOpen.value = !mobileMenuOpen.value;
+};
 </script>
 
 <template>
-  <nav class="bg-slate-900 sticky top-0 shadow-lg border-b border-b-slate-500">
-    <div
-      class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4"
-    >
-      <RouterLink :to="{ name: 'dashboard' }" class="flex items-center">
-        <h2 class="text-2xl text-white">ComLogo</h2>
-      </RouterLink>
+  <nav
+    class="bg-slate-900 z-50 sticky top-0 shadow-lg border-b border-b-slate-500"
+  >
+    <div class="flex justify-between items-center p-4">
+      <div class="flex justify-between items-center space-x-5">
+        <RouterLink :to="{ name: 'dashboard' }" class="flex items-center">
+          <h2 class="text-3xl text-white">ComLogo</h2>
+        </RouterLink>
+
+        <button @click="toggleMobileMenu" class="focus:outline-none">
+          <svg
+            v-show="!mobileMenuOpen"
+            class="w-6 h-6"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 12h18M3 6h18M3 18h18"></path>
+          </svg>
+
+          <svg
+            v-show="mobileMenuOpen"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="white"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
 
       <div class="flex items-center space-x-2">
         <a href="#" class="relative p-1">
@@ -70,7 +112,7 @@ function logOut() {
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
-              stroke="currentColor"
+              stroke="white"
               class="w-6 h-6"
             >
               <path

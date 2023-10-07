@@ -6,7 +6,7 @@ const auth = useAuth();
 
 <template>
   <div
-    class="bg-slate-500 h-screen flex justify-center items-center p-4 sm:ml-64"
+    class="bg-white h-screen flex justify-center items-center p-4 sm:ml-64"
   >
     <div
       class="p-5 md:p-10 text-center bg-white bg-opacity-60 border-slate-700 border-2 border-dashed rounded-lg"

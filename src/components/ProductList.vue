@@ -1,16 +1,25 @@
 <script setup>
 import {RouterLink,RouterView } from 'vue-router'
 import axios from 'axios'
-import { ref, onBeforeMount } from 'vue'
-const products = ref([])
+import {ref, onBeforeMount, reactive} from 'vue'
+import {useProduct} from "../stores/productStore.js";
+import {storeToRefs} from "pinia";
 
+const pro=useProduct();
+
+const {products,singleProduct} = storeToRefs(pro);
 
 onBeforeMount(() => {
-  axios.get('https://dummyjson.com/products')
-      .then(res => {
-        products.value = res.data.products
-      })
+ pro.getData();
 });
+
+
+// onBeforeMount(() => {
+//   axios.get('https://dummyjson.com/products')
+//       .then(res => {
+//         products.value = res.data.products
+//       })
+// });
 
 
 const detailsBtn =
@@ -18,34 +27,66 @@ const detailsBtn =
 
 
 
+
+const Header = [
+  { text: "Category", value: "category" },
+  { text: "Brand", value: "brand" },
+  { text: "Image", value:"thumbnail"},
+  { text: "Name", value: "title", sortable: true },
+  { text: "Price (Tk)", value: "price", sortable: true },
+  { text: "Stock", value: "stock"},
+  { text: "Rating", value: "img "},
+  { text: "Action", value: "id"}
+];
+
+
+function itemView(id){
+
+  pro.getSingleProductDetails(id);
+
+}
+
+
+
+const searchField = ["Category","Brand","Image","Name","Price","Stock", "Rating"];
+
+const searchValue = ref();
+
+
 </script>
 <template>
-  <section class="container mx-auto py-20 px-10">
-    <h1 class="text-2xl md:text-6xl font-semibold pb-2 text-center">
-      Featured Plants
-    </h1>
-    <p class="text-center">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    </p>
 
-    <div class="h-1 bg-lime-600 w-52 mx-auto my-3"></div>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mt-5 md:mt-10">
-      <div class="border hover:shadow-lg cursor-pointer" v-for="product in products" :key="product.id">
-        <img
-          :src="product.thumbnail"
-          class="h-[300px] w-auto"
-          alt=""
-        />
-        <div class="p-5">
-          <span class="text-gray-800 italic text-sm font-bold">{{product.title}}</span>
-          <p>$ {{product.price}}</p>
-          <div class="flex justify-between items-center mt-4">
-            <router-link :to="{ name: 'productDetails', params: { id: product.id } }" :class="detailsBtn" type="submit">View Details </router-link>
+  <div class="md:container md:mx-auto">
+  <h6 class=" md:text-4xl  pb-2 text-center"> Products </h6>
+  <div class="h-1 bg-lime-600 w-52 mx-auto my-3"></div>
 
 
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <input placeholder="Search..." class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text" v-model="searchValue">
+
+  <EasyDataTable :headers="Header" :items="products" :rows-per-page="10" :search-field="searchField"  :search-value="searchValue">
+    <template #item-thumbnail="{thumbnail}" >
+      <img :src="thumbnail" alt="" class="custom">
+    </template>
+
+    <template #item-id="{id}">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" @click="itemView(id)">View</button>
+    </template>
+
+  </EasyDataTable>
+
+</div>
+
 </template>
+
+<style scoped>
+.custom{
+  height:60px;
+  width:60px;
+}
+
+</style>
+
+
+
+
+
