@@ -4,6 +4,7 @@ import Dashboard from "../components/Dashboard.vue";
 import Login from "../components/Login.vue";
 import { useAuth } from "../stores/auth";
 import ProductList from "../components/ProductList.vue";
+import ProductDetails from "../components/ProductDetails.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,11 +22,18 @@ const router = createRouter({
       meta: { title: "Dashboard", requiresAuth: true },
     },
 
+
     {
       path: "/products",
       name: "product",
       component: ProductList,
       meta: { title: "product", requiresAuth: true },
+    },
+    {
+      path: '/single/product/:id',
+      name: "productDetails",
+      component: ProductDetails,
+      meta: { title: "SingleProduct", requiresAuth: true },
     },
 
     {

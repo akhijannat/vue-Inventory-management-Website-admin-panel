@@ -1,31 +1,33 @@
 <script setup>
 import router from "../router";
 import { useAuth } from "../stores/auth";
-import { ElMessage, ElNotification } from "element-plus";
+import { ref } from "vue";
+import Swal from "sweetalert2";
 
 const auth = useAuth();
 function logOut() {
-  const success = auth.logout();
-  if (success) {
-    router.push({ name: "login" });
-    ElNotification({
-      title: "Success",
-      message: "You have Successfully Logged Out",
-      type: "success",
-      position: "top-right",
-      duration: 2000,
-    });
-  } else {
-    ElMessage({
-      type: "error",
-      message: "Something went wrong",
-    });
-  }
+  Swal.fire({
+    title: "Are you sure To Log Out?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const success = auth.logout();
+
+      if (success) {
+        router.push({ name: "login" });
+        Swal.fire("success!", "You have successfully logOut", "success");
+      } else {
+        Swal.fire("error!", "Something went wrong", "success");
+      }
+    }
+  });
 }
 
-import { ref } from "vue";
-
-const mobileMenuOpen = ref(false);
+const mobileMenuOpen = ref(true);
 
 const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value;
@@ -38,7 +40,7 @@ const toggleMobileMenu = () => {
     <div class="flex justify-between items-center p-4">
       <div class="flex justify-between items-center space-x-5">
         <RouterLink :to="{ name: 'dashboard' }" class="flex items-center">
-          <h2 class="text-3xl text-white">ComLogo</h2>
+          <h2 class="text-3xl text-white">Admin-Panel</h2>
         </RouterLink>
 
         <button @click="toggleMobileMenu" class="focus:outline-none mt-2">
@@ -133,11 +135,13 @@ const toggleMobileMenu = () => {
               >
             </li>
             <li class="">
-              <a
-                class="rounded-t border-b border-dotted py-2 px-4 block whitespace-no-wrap"
-                href="#"
-                >Dashboard</a
-              >
+              <RouterLink :to="{ name: 'dashboard' }" class="flex items-center">
+                <a
+                  class="rounded-t border-b border-dotted py-2 px-4 block whitespace-no-wrap"
+                  href="javascript:void(0)"
+                  >Dashboard</a
+                >
+              </RouterLink>
             </li>
 
             <li class="">
@@ -183,7 +187,9 @@ const toggleMobileMenu = () => {
                 ></path>
               </svg>
             </div>
-            <div>Dashboard</div>
+            <RouterLink :to="{ name: 'dashboard' }" class="flex items-center">
+              Dashboard
+            </RouterLink>
           </a>
         </li>
 
